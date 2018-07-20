@@ -24,11 +24,16 @@ firebase.auth().onAuthStateChanged(function(user) {
     // var uid = user.uid;
     // console.log("user");
 
-    renderAllNotes(function() {
-      setTimeout(function() {
-        $("#inner-wrapper").append(createHTML({},"new-note-template"));
-      }, ANIMATION_DELAY);
-    });
+    setTimeout(function () {
+      $("body").removeClass("taken-over");
+      $("#screen-takeover").fadeOut(500);
+
+      renderAllNotes(function() {
+        setTimeout(function() {
+          $("#inner-wrapper").append(createHTML({},"new-note-template"));
+        }, ANIMATION_DELAY);
+      });
+    }, 1500);
   } else {
     // User is signed out.
     // console.log("out");
