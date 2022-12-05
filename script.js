@@ -1,5 +1,7 @@
 const ANIMATION_DELAY = 0; // in ms
+const MESSAGES_FROM_EXPORTED_JSON = true;
 
+/*
 const FIREBASE_DB_PATH = `/notes`;
 
 // Initialize Firebase
@@ -39,14 +41,26 @@ firebase.auth().onAuthStateChanged(function(user) {
     // console.log("out");
   }
 });
+*/
+
+$("body").removeClass("taken-over");
+$("#screen-takeover").fadeOut(500);
+
+renderAllNotes(function() {
+  setTimeout(function() {
+    $("#inner-wrapper").append(createHTML({},"new-note-template"));
+  }, ANIMATION_DELAY);
+});
 
 Handlebars.registerHelper("localTime", function(timestamp) {
   return moment.unix(timestamp/1000).format("YYYY-MM-DD hh:mm a");
 });
 
 function renderAllNotes(done) {
-  firebase.database().ref(FIREBASE_DB_PATH).once('value').then(function(snapshot) {
-    var notes = snapshot.val();
+  $.getJSON("data.json", function(notes) {
+    if (MESSAGES_FROM_EXPORTED_JSON) {
+      notes = notes.notes;
+    }
     var numNotes = Object.keys(notes).length;
     var currIndex = 0;
 
@@ -67,6 +81,30 @@ function renderAllNotes(done) {
 
     renderNotesWithDelay();
   });
+
+
+  // firebase.database().ref(FIREBASE_DB_PATH).once('value').then(function(snapshot) {
+  //   var notes = snapshot.val();
+  //   var numNotes = Object.keys(notes).length;
+  //   var currIndex = 0;
+
+  //   function renderNotesWithDelay() {
+  //     var key = Object.keys(notes)[currIndex];
+  //     var currentNote = notes[key];
+
+  //     currentNote.id = key;
+  //     renderNote(currentNote);
+
+  //     currIndex += 1;
+  //     if (currIndex <= numNotes-1) {
+  //       setTimeout(renderNotesWithDelay, ANIMATION_DELAY);
+  //     } else {
+  //       done();
+  //     }
+  //   }
+
+  //   renderNotesWithDelay();
+  // });
 }
 
 function createHTML(data, templateId) {
