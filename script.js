@@ -1,4 +1,4 @@
-const ANIMATION_DELAY = 0; // in ms
+const ANIMATION_DELAY = 300; // in ms
 const MESSAGES_FROM_EXPORTED_JSON = true;
 
 /*
@@ -44,7 +44,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 */
 
 $("body").removeClass("taken-over");
-$("#screen-takeover").fadeOut(500);
+$("#screen-takeover").fadeOut(2000);
 
 renderAllNotes(function() {
   setTimeout(function() {
